@@ -6,10 +6,8 @@ public class MyHeap{
     size=0;
   }
   private static void pushDown(int[] data, int size, int index){
-    int first=0;
-    int second =0;
-    boolean downfirst=true;
-    boolean downsecond = true;
+    int first=0; int second =0;
+    boolean downfirst=true; boolean downsecond = true;
     if (index*2+1<size) first = index*2+1;
     else downfirst = false;
     if(index*2+2<size) second = index*2+2;
@@ -22,19 +20,36 @@ public class MyHeap{
       if ((downfirst && !downsecond) || child1>child2 ){
         data[first]=data[index];
         data[index]=child1;
-        index=first;
-      }
+        index=first;}
       else{
         data[second]=data[index];
         data[index]=child2;
-        index=second;
-      }
+        index=second;  }
       if (index*2+1<size) first = index*2+1;
       else downfirst = false;
       if(index*2+2<size) second = index*2+2;
       else downsecond = false;
     }
   }
+
+private static void pushUp(int[] data, int size, int index){
+  int parent;
+  boolean swapped=true;
+  if (index==0) swapped=false;
+  while(swapped){
+    parent = data[(index-1)/2];
+    if (parent<data[index]){
+      data[(index-1)/2]=data[index];
+      data[index]=parent;//performs swap
+      index=(index-1)/2;//sets new index
+      swapped= true;
+    }
+    if (index==0) swapped=false;//if you have reached the top then stop
+  }
+}
+public static void heapify (int [] data){
+  
+}
   private void resize(){
     int[] newy = new int[size*2];
     int index=0;
