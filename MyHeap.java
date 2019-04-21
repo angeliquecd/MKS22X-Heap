@@ -5,7 +5,30 @@ public class MyHeap{
     heap = new int[10];
     size=0;
   }
-  private static void pushDown(int[] data, int size, int index){
+  private static void swap (int[] data, int one, int two){
+    int temp = data[one];
+    data[one]=data[two];
+    data[two]=temp;
+  }
+  private static void pushDown(int [] data, int size, int index){
+    if (index*2+1>size) return;
+    if (index*2+2>size) return;
+    if (index*2+2==size){
+      int child2 = data[index*2+2];
+      if (child2> data[index]) swap(data,index*2+2, index);
+      return;}
+  int child1 = data[index*2+1];
+  int child2 = data[index*2+2];
+  int biggerchild;
+  if (child1>child2)  biggerchild=index*2+1;
+  else biggerchild =index*2+2;
+  if (data[index]<data[biggerchild]) {
+    swap (data,index,biggerchild);
+    pushDown(data,size,biggerchild);
+  }
+  else return;
+  }
+  private static void pushDown2(int[] data, int size, int index){
     int first=0; int second =0;
     boolean downfirst=true; boolean downsecond = true;
     if (index*2+1<size) first = index*2+1;
@@ -48,7 +71,16 @@ private static void pushUp(int[] data, int size, int index){
   }
 }
 public static void heapify (int [] data){
-  
+  int index = 0;
+  int earlier =0;
+  while(index<data.length){
+    earlier=data[index];
+    pushDown(data,data.length-1,index);
+    if (data[index]==earlier){
+      index++;
+    HeapPrinter.print(data);
+    }
+  }
 }
   private void resize(){
     int[] newy = new int[size*2];
@@ -62,10 +94,22 @@ public static void heapify (int [] data){
     for (int a: heap){
       System.out.print(a+ ", ");
     }
+    System.out.println();
   }
   public static void main(String[] args){
     int[] heap = {20,4,10,9,6,2,3};
     pushDown(heap,heap.length,1);
+    pushDown(heap, heap.length,0);
     printString(heap);
+    int [] heap1 = {2,25,41,10,9,5,4};
+    pushUp(heap,heap.length,0);
+    printString(heap1);
+    HeapPrinter.print(heap1);
+    heapify(heap1);
+    HeapPrinter.print(heap1);
+    HeapPrinter.print(heap);
+    int[] heaply = {4,10,50,20,5,16,20,12};
+    heapify(heaply);
+    HeapPrinter.print(heaply);
   }
 }
