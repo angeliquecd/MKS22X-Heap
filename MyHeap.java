@@ -12,19 +12,19 @@ public class MyHeap{
     data[two]=temp;
   }
   private static void pushDown(int [] data, int size, int index){
-    if (index*2+1>size) return;
-    if (index*2+1==size){
+    if (index*2+1>size) return;//no children
+    if (index*2+1==size){//edge case (only one child)
       int child2 = data[index*2+1];
       if (child2> data[index]) swap(data,index*2+1, index);
       return;}
   int child1 = data[index*2+1];
-  int child2 = data[index*2+2];
+  int child2 = data[index*2+2];//establishes children
   int biggerchild;
-  if (child1>child2)  biggerchild=index*2+1;
+  if (child1>child2)  biggerchild=index*2+1;//establishes which is the bigger child
   else biggerchild =index*2+2;
-  if (data[index]<data[biggerchild]) {
-    swap (data,index,biggerchild);
-    pushDown(data,size,biggerchild);
+  if (data[index]<data[biggerchild]) {//if heap is messed up
+    swap (data,index,biggerchild);//swap
+    pushDown(data,size,biggerchild);//carry on
   }
   else return;
   }
@@ -35,28 +35,28 @@ private static void pushUp(int[] data, int size, int index){
     parent = data[(index-1)/2];
     if (parent<data[index]){
       swap (data,(index-1)/2,index);
-      pushUp(data,size,(index-1)/2);
+      pushUp(data,size,(index-1)/2);//otherwise continue with new index as starting point
     }
 }
 public static void heapify (int [] data){
   int index = 0;
   int earlier =0;
-  while(index<data.length){
+  while(index<data.length){//stops at the end
     earlier=data[index];
     pushDown(data,data.length-1,index);
-    pushUp(data,data.length-1,index);
-    if (data[index]==earlier){
+    pushUp(data,data.length-1,index); //essentially checks each heap then
+    if (data[index]==earlier){//moves on if no change occurs
       index++;}
-    HeapPrinter.print(data);
-    System.out.println();
-   System.out.println(""+index);
+    //HeapPrinter.print(data);
+  //  System.out.println();
+   //System.out.println(""+index);
   }
 }
-private static boolean checkheap(int[] data, int index){
+private static boolean checkheap(int[] data, int index){//also not used but could be useful later
   if (index*2+1<data.length)  return (data[index]>data[index*2+2] && data[index]>data[index*2+1]);
   return true;
 }
-public static void heapify (int [] data,int size){
+public static void heapify (int [] data,int size){//not really used and doesn't work
   int index = 0;
   int earlier =0;
   while(index<size+1){
@@ -70,26 +70,18 @@ public static void heapify (int [] data,int size){
 }
 public static void heapsort(int[] data){
   int n =1;
-  heapify(data);
-  printString(data);
+  heapify(data);//makes it a valid heap first
+  //printString(data);
   while (n<data.length){
-  swap(data,0,data.length-n);
-  System.out.println("swaps: ");
-  printString(data);
-  n++;
-  pushDown(data, data.length-n, 0);
-  System.out.println("pushes down: ");
-  printString(data);
+  swap(data,0,data.length-n); //swaps with the end
+//  System.out.println("swaps: ");
+  //printString(data);
+  n++;//increments
+  pushDown(data, data.length-n, 0); //moves the first one down to where it belongs
+  //System.out.println("pushes down: ");
+//  printString(data);
 }
 }
-  private void resize(){
-    int[] newy = new int[size*2];
-    int index=0;
-    for (int i: heap){
-      newy[index]=i;
-      index++;
-    }
-  }
   public static void printString(int[] heap){
     for (int a: heap){
       System.out.print(a+ ", ");
