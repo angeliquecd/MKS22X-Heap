@@ -1,3 +1,4 @@
+import java.util.*;
 public class MyHeap{
   private int[] heap;
   private int size;
@@ -27,47 +28,15 @@ public class MyHeap{
   }
   else return;
   }
-  /*private static void pushDown2(int[] data, int size, int index){
-    int first=0; int second =0;
-    boolean downfirst=true; boolean downsecond = true;
-    if (index*2+1<size) first = index*2+1;
-    else downfirst = false;
-    if(index*2+2<size) second = index*2+2;
-    else downsecond = false;
-    int child1=data[first];
-    int child2=data[second];
-    while ( (downfirst|| downsecond) && data[index]<child1 && data[index]<child2){
-      if (downfirst) child1 = data[first];
-      if (downsecond) child2= data[second];
-      if ((downfirst && !downsecond) || child1>child2 ){
-        data[first]=data[index];
-        data[index]=child1;
-        index=first;}
-      else{
-        data[second]=data[index];
-        data[index]=child2;
-        index=second;  }
-      if (index*2+1<size) first = index*2+1;
-      else downfirst = false;
-      if(index*2+2<size) second = index*2+2;
-      else downsecond = false;
-    }
-  }*/
 
 private static void pushUp(int[] data, int size, int index){
   int parent;
-  boolean swapped=true;
-  if (index==0) swapped=false;
-  while(swapped){
+  if (index==0) return;//if you have reached the top then stop
     parent = data[(index-1)/2];
     if (parent<data[index]){
-      data[(index-1)/2]=data[index];
-      data[index]=parent;//performs swap
-      index=(index-1)/2;//sets new index
-      swapped= true;
+      swap (data,(index-1)/2,index);
+      pushUp(data,size,(index-1)/2);
     }
-    if (index==0) swapped=false;//if you have reached the top then stop
-  }
 }
 public static void heapify (int [] data){
   int index = 0;
@@ -75,11 +44,17 @@ public static void heapify (int [] data){
   while(index<data.length){
     earlier=data[index];
     pushDown(data,data.length-1,index);
+    pushUp(data,data.length-1,index);
     if (data[index]==earlier){
       index++;}
-    //HeapPrinter.print(data);
-  //  System.out.println(""+index);
+    HeapPrinter.print(data);
+    System.out.println();
+   System.out.println(""+index);
   }
+}
+private static boolean checkheap(int[] data, int index){
+  if (index*2+1<data.length)  return (data[index]>data[index*2+2] && data[index]>data[index*2+1]);
+  return true;
 }
 public static void heapify (int [] data,int size){
   int index = 0;
@@ -89,16 +64,21 @@ public static void heapify (int [] data,int size){
     pushDown(data,size,index);
     if (data[index]==earlier){
       index++;}
-    //HeapPrinter.print(data);
+  //  HeapPrinter.print(data);
   //  System.out.println(""+index);
   }
 }
 public static void heapsort(int[] data){
   int n =1;
-  while(n<data.length){
-  heapify(data,data.length-n);
+  heapify(data);
+  printString(data);
+  while (n<data.length){
   swap(data,0,data.length-n);
+  System.out.println("swaps: ");
+  printString(data);
   n++;
+  pushDown(data, data.length-n, 0);
+  System.out.println("pushes down: ");
   printString(data);
 }
 }
@@ -117,6 +97,7 @@ public static void heapsort(int[] data){
     System.out.println();
   }
   public static void main(String[] args){
+    Random rng = new Random();
     int[] heap = {20,4,10,9,6,2,3};
     pushDown(heap,heap.length-1,1);
     pushDown(heap, heap.length-1,0);
@@ -128,7 +109,11 @@ public static void heapsort(int[] data){
     heapify(heap1);
     HeapPrinter.print(heap1);
     HeapPrinter.print(heap);
-    int[] heaply = {4,10,50,23,5,16,20,12};
+    int[] heaply = new int[25];
+    for (int i=0;i<heaply.length;i++){
+      heaply[i]=Math.abs(rng.nextInt()%100);
+    }
+    System.out.println("Heapifying: ");
     heapify(heaply);
     HeapPrinter.print(heaply);
     int [] tosort ={80,4,5,2,32,65,24,5,12,50};
