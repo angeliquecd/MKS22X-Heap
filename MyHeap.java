@@ -52,6 +52,13 @@ public static void heapify (int [] data){
    //System.out.println(""+index);
   }
 }
+public static void heapify2 (int [] data){
+  int n = 1;
+  while (n<=data.length){
+    pushDown(data, data.length-1,data.length-n);
+    n++;
+  }
+}
 private static boolean checkheap(int[] data, int index){//also not used but could be useful later
   if (index*2+1<data.length)  return (data[index]>data[index*2+2] && data[index]>data[index*2+1]);
   return true;
@@ -105,11 +112,22 @@ public static void heapsort(int[] data){
     for (int i=0;i<heaply.length;i++){
       heaply[i]=Math.abs(rng.nextInt()%100);
     }
+    int[] heaply1 = new int[25];
+    for (int i=0;i<heaply.length;i++){
+      heaply1[i]=Math.abs(rng.nextInt()%200);
+    }
+    int[] heaply2 = new int[25];
+    for (int i=0;i<heaply.length;i++){
+      heaply2[i]=Math.abs(rng.nextInt()%100);
+    }
     System.out.println("Heapifying: ");
-    heapify(heaply);
+    heapify2(heaply);
     HeapPrinter.print(heaply);
-    int [] tosort ={80,4,5,2,32,65,24,5,12,50};
-    heapsort(tosort);
-    printString(tosort);
+    System.out.println();
+    heapify2(heaply1);
+    HeapPrinter.print(heaply1);
+    System.out.println();
+    heapify2(heaply2);
+    HeapPrinter.print(heaply2);
   }
 }
